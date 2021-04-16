@@ -26,18 +26,54 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/rainfallpred', methods=['GET', 'POST'])
-def MakePrediction():
+def MakeRainfallPrediction():
     if request.method == 'POST':
         posted_data = request.get_json()
         first_month = posted_data['first_month']
         second_month = posted_data['second_month']
         third_month = posted_data['third_month']
-        A=[[first_month, second_month, third_month]]
+        A = [[first_month, second_month, third_month]]
         A = np.array(A)
         print(A)
-        prd= rainfall_predictor.predictor(A)
+        prd = rainfall_predictor.predictor(A)
         return(str(prd))
-        
+
+@app.route('/fatalitypred', methods=['GET', 'POST'])        
+def MakeFatalityPrediction():
+    if request.method == 'POST':
+        posted_data = request.get_json()
+        location_accuracy = posted_data['location_accuracy']
+        landslide_category = posted_data['landslide_category']
+        landslide_trigger = posted_data['landslide_trigger']
+        landslide_size = posted_data['landslide_size']
+        landslide_setting = posted_data['landslide_setting']
+        country_name = posted_data['country_name']
+        admin_division_population = posted_data['admin_division_population']
+        longitude = posted_data['longitude']
+        latitude = posted_data['latitude']
+        A = [[location_accuracy,	landslide_category,	landslide_trigger, landslide_size, landslide_setting, country_name,	admin_division_population,longitude,latitude]]
+        A = np.array(A)
+        print(A)
+        prd = landslide_predictor.predictor(A)
+        return(str(prd))
+
+@app.route('/magnitudepred', methods=['GET', 'POST'])
+def MakeMagnitudePrediction():
+    if request.method == 'POST':
+        posted_data = request.get_json()
+        latitude = posted_data['latitude']
+        longitude = posted_data['longitude']
+        rms = posted_data['rms']
+        types = posted_data['type']
+        status = posted_data['status']
+        locationSource = posted_data['locationSource']
+        magSource = posted_data['magSource']
+        shortPlace = posted_data['shortPlace']
+        A = [[latitude, longitude, rms, types, status, locationSource, magSource,shortPlace]]
+        A = np.array(A)
+        print(A)
+        prd = earthquake_predictor.predictor(A)
+        return(str(prd))
 
 if __name__=='__main__':
     app.run(debug=False)
