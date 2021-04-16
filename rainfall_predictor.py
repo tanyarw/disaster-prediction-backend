@@ -36,4 +36,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Perform Regression
 rf = RandomForestRegressor(n_estimators = 200, max_depth=10)
 rf.fit(X_train, y_train)
-y_pred = rf.predict(X_test)
+
+def predictor(my_array):
+    y_pred = rf.predict(my_array)
+    return y_pred

@@ -14,7 +14,6 @@ from sklearn.metrics import mean_absolute_error
 landslide_df = pd.read_csv('Datasets/NASA_Global_Landslide_Catalog.csv')
 
 # Drop unwanted features
-
 landslide_df = landslide_df.drop(['source_name', 'source_link','event_id', 'event_date','event_time',
                         'event_title', 'event_description', 'location_description','storm_name','photo_link',
                         'notes', 'event_import_source','event_import_id','country_code','submitted_date', 
@@ -47,4 +46,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
 # Perform regression
 clf = RandomForestRegressor(n_estimators=150, max_depth = None, criterion='mse')
 clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
+
+def predictor(my_array):
+    y_pred = clf.predict(my_array)
+    return y_pred
