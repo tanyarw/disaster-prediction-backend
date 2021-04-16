@@ -27,17 +27,16 @@ CORS(app)
 
 @app.route('/rainfallpred', methods=['GET', 'POST'])
 def MakePrediction():
-	if request.method == 'POST':
-		posted_data = request.get_json()
-		first_month = posted_data['first_month']
-		second_month = posted_data['second_month']
-		third_month = posted_data['third_month']
-		return(str(posted_data))
-        A=[first_month, second_month, third_month]
-	    A = np.array(A)
-	    print(A)
-	    prd= rainfall_predictor.predictor(A)
-	    return(str(prd))
+    if request.method == 'POST':
+        posted_data = request.get_json()
+        first_month = posted_data['first_month']
+        second_month = posted_data['second_month']
+        third_month = posted_data['third_month']
+        A=[[first_month, second_month, third_month]]
+        A = np.array(A)
+        print(A)
+        prd= rainfall_predictor.predictor(A)
+        return(str(prd))
         
 
 if __name__=='__main__':
