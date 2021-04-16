@@ -20,7 +20,7 @@ earthquake_df.dropna(subset=['mag'],inplace=True)
 # Feature vector
 features=[i for i in earthquake_df.columns if earthquake_df[i].isna().sum()==0] # features include place, type and source
 
-for i in ['mag','place','time','id','updated','net','magType','depth']:
+for i in ['mag','place','time','id','updated','net','magType','depth','depthError']:
     features.remove(i)
     
 X=earthquake_df[features]
@@ -57,5 +57,5 @@ def predictor(my_array):
         i += 1
         enc_array.append(t)
 
-    y_pred = clf.predict(enc_array)
+    y_pred = clf.predict([enc_array])
     return y_pred #['mag','depth', 'depthError'] 3 values
