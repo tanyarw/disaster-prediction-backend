@@ -6,20 +6,19 @@ from werkzeug.utils import secure_filename
 import landslide_predictor
 import rainfall_predictor
 import earthquake_predictor
-UPLOAD_FOLDER = '/Users/Tanya/Desktop/LAB/Projects/disaster-prediction-backend'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 
 app = Flask(__name__)
 CORS(app)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        my_array1 = np.array([])
-        my_array2 = np.array([['month1','month2','month3']]) #2D Array
-        my_array3 = np.array(['latitude', 'longitude', 'rms', 'type', 'status', 'locationSource', 'magSource', 'short place'])
+        #2D Arrays
+        my_array1 = np.array([['location_accuracy',	'landslide_category',	'landslide_trigger', 'landslide_size', 'landslide_setting', 'country_name',	'admin_division_population','longitude','latitude']])
+        my_array2 = np.array([['month1','month2','month3']]) 
+        my_array3 = np.array([['latitude', 'longitude', 'rms', 'type', 'status', 'locationSource', 'magSource', 'short place']])
         
         
         ans1 = landslide_predictor.predictor(my_array1)

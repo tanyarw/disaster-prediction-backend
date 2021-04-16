@@ -33,11 +33,13 @@ for i in features:
         categorical.append(i)
 
 # Encode the data
-le = preprocessing.LabelEncoder()
+from sklearn import preprocessing
+label_maps = {}
 for i in categorical:
-    X[i]=le.fit_transform(X[i])
-for i in [i for i in y.columns if y[i].dtype=='object']:
-    y[i]=le.fit_transform(y[i])
+    le = preprocessing.LabelEncoder().fit(X[i])
+    X[i]=le.transform(X[i])
+    d = dict(zip(le.classes_, le.transform(le.classes_)))
+    label_maps[i] = d
 
 # Train and test split
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.10)
@@ -47,21 +49,13 @@ clf = RandomForestRegressor(n_estimators=100, criterion='mse', max_depth=None, m
 clf.fit(X_train, y_train)
 
 def predictor(my_array):
+    enc_array = my_array[0:3]
+    labels = ['type', 'status', 'locationSource', 'magSource', 'short place']
+    i = 3
+    for label in labels:
+        t = label_maps[label][my_array[i]]
+        i += 1
+        enc_array.append(t)
 
-    # Create input df
-    features = ['latitude', 'longitude', 'rms', 'type', 'status', 'locationSource', 'magSource', 'short place']
-    df = pd.DataFrame(my_array, columns = features)
-
-    # Separate categorical data
-    categorical_df = []
-    for i in features:
-        if df[i].dtype=="object":
-            categorical_df.append(i)
-
-    # Encode categorical data
-    le_df = preprocessing.LabelEncoder()
-    for i in categorical:
-        df[i]=le_df.fit_transform(X[i])
-
-    y_pred = clf.predict(df)
-    return y_pred #['mag','depth', 'depthError']
+    y_pred = clf.predict(enc_array)
+    return y_pred #['mag','depth', 'depthError'] 3 values
