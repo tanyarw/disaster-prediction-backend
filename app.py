@@ -18,8 +18,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def upload_file():
     if request.method == 'POST':
         my_array1 = np.array([])
-        my_array2 = np.array(['latitude', 'longitude', 'rms', 'type', 'status', 'locationSource', 'magSource', 'short place'])
-        my_array3 = np.array([])
+        my_array2 = np.array([['month1','month2','month3']]) #2D Array
+        my_array3 = np.array(['latitude', 'longitude', 'rms', 'type', 'status', 'locationSource', 'magSource', 'short place'])
+        
         
         ans1 = landslide_predictor.predictor(my_array1)
         ans2 = rainfall_predictor.predictor(my_array2)

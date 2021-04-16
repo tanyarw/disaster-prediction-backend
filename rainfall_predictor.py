@@ -38,5 +38,5 @@ rf = RandomForestRegressor(n_estimators = 200, max_depth=10)
 rf.fit(X_train, y_train)
 
 def predictor(my_array):
-    y_pred = rf.predict(my_array)
-    return y_pred
+    y_pred = rf.predict(my_array) #array of 1 value
+    return y_pred[0]
