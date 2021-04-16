@@ -34,7 +34,6 @@ def MakeRainfallPrediction():
         third_month = posted_data['third_month']
         A = [[first_month, second_month, third_month]]
         A = np.array(A)
-        print(A)
         prd = rainfall_predictor.predictor(A)
         return(str(prd))
 
@@ -52,8 +51,6 @@ def MakeFatalityPrediction():
         longitude = posted_data['longitude']
         latitude = posted_data['latitude']
         A = [location_accuracy,landslide_category,landslide_trigger, landslide_size, landslide_setting, country_name,admin_division_population,longitude,latitude]
-        A = np.array(A)
-        print(A)
         prd = landslide_predictor.predictor(A)
         return(str(prd))
 
@@ -70,8 +67,6 @@ def MakeMagnitudePrediction():
         magSource = posted_data['magSource']
         shortPlace = posted_data['shortPlace']
         A = [latitude, longitude, rms, types, status, locationSource, magSource,shortPlace]
-        A = np.array(A)
-        print(A)
         prd = earthquake_predictor.predictor(A)
         return(str(prd))
 

@@ -54,20 +54,16 @@ clf = RandomForestRegressor(n_estimators=150, max_depth = None, criterion='mse')
 clf.fit(X_train, y_train)
 
 def predictor(my_array):
-    test =[1,2,3,5]
 
     enc_array = [[]]
     print('MY ARRAY: ',my_array)
     labels = ['location_accuracy',	'landslide_category',	'landslide_trigger', 'landslide_size', 'landslide_setting', 'country_name',	'admin_division_population','longitude','latitude']
     i = 0
     for label in labels:
-        print('OUTSIDE: ',label)
         if(label=='admin_division_population' or label=='longitude' or label=='latitude'):
-            print(label)
             enc_array[0].append(float(my_array[i]))
             i += 1
         else:
-            print(label)
             t = label_maps[label][my_array[i]]
             i += 1
             enc_array[0].append(t)
