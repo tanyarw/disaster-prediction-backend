@@ -51,7 +51,7 @@ def MakeFatalityPrediction():
         admin_division_population = posted_data['admin_division_population']
         longitude = posted_data['longitude']
         latitude = posted_data['latitude']
-        A = [[location_accuracy,	landslide_category,	landslide_trigger, landslide_size, landslide_setting, country_name,	admin_division_population,longitude,latitude]]
+        A = [location_accuracy,landslide_category,landslide_trigger, landslide_size, landslide_setting, country_name,admin_division_population,longitude,latitude]
         A = np.array(A)
         print(A)
         prd = landslide_predictor.predictor(A)
@@ -69,7 +69,7 @@ def MakeMagnitudePrediction():
         locationSource = posted_data['locationSource']
         magSource = posted_data['magSource']
         shortPlace = posted_data['shortPlace']
-        A = [[latitude, longitude, rms, types, status, locationSource, magSource,shortPlace]]
+        A = [latitude, longitude, rms, types, status, locationSource, magSource,shortPlace]
         A = np.array(A)
         print(A)
         prd = earthquake_predictor.predictor(A)
