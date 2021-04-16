@@ -14,10 +14,7 @@ from sklearn.metrics import mean_absolute_error
 landslide_df = pd.read_csv('Datasets/NASA_Global_Landslide_Catalog.csv')
 
 # Drop unwanted features
-landslide_df = landslide_df.drop(['source_name', 'source_link','event_id', 'event_date','event_time',
-                        'event_title', 'event_description', 'location_description','storm_name','photo_link',
-                        'notes', 'event_import_source','event_import_id','country_code','submitted_date', 
-                        'created_date', 'last_edited_date','admin_division_name','gazeteer_closest_point', 'gazeteer_distance','injury_count'], axis = 1)
+landslide_df = landslide_df.drop(['source_name', 'source_link','event_id', 'event_date','event_time', 'event_title', 'event_description', 'location_description','storm_name','photo_link', 'notes', 'event_import_source','event_import_id','country_code','submitted_date', 'created_date', 'last_edited_date','admin_division_name','gazeteer_closest_point', 'gazeteer_distance','injury_count'], axis = 1)
 
 # Drop unknown categories
 
