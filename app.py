@@ -5,13 +5,13 @@
 
         rainfall_array = np.array([['month1 rainfall','month2 rainfall','month3 rainfall']]) 
 
-        earthquake_array = np.array([['latitude', 'longitude', 'rms', 'type', 'status', 'locationSource', 'magSource', 'short place']])
+        earthquake_array = np.array([['latitude', 'longitude', 'depth', 'rms', 'type', 'depthError', 'status', 'locationSource', 'magSource', 'short place']])
         
         # Output Arrays
         
         [fatality_count] = landslide_predictor.predictor(landslide_array)
         [month4 rainfall] = rainfall_predictor.predictor(rainfall_array)
-        [mag,depth, depthError] = earthquake_predictor.predictor(earthquake_array)
+        [mag] = earthquake_predictor.predictor(earthquake_array)
 '''
 
 import os

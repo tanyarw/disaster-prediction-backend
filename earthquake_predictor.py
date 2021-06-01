@@ -55,14 +55,15 @@ clf.fit(X_train, y_train)
 def predictor(my_array):
     enc_array = my_array[0:4]
     labels = ['type', 'depthError', 'status', 'locationSource', 'magSource', 'short place']
-    i = 3
+    i = 4
     for label in labels:
         if label == 'depthError':
             enc_array.append(my_array[5])
+            i +=1 
             continue
         t = label_maps[label][my_array[i]]
         i += 1
         enc_array.append(t)
 
-    y_pred = clf.predict(enc_array)
+    y_pred = clf.predict([enc_array])
     return y_pred[0]
