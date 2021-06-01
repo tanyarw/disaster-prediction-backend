@@ -7,16 +7,24 @@
 
         earthquake_array = np.array([['latitude', 'longitude', 'depth', 'rms', 'type', 'depthError', 'status', 'locationSource', 'magSource', 'short place']])
         
-        # Output Arrays
-        
-        [fatality_count] = landslide_predictor.predictor(landslide_array)
-        [month4 rainfall] = rainfall_predictor.predictor(rainfall_array)
-        [mag] = earthquake_predictor.predictor(earthquake_array)
+        # Output
+
+        /rainfallpred
+        MakeRainfallPrediction() => [fatality_count]      
+
+        /fatalitypred  
+        MakeFatalityPrediction() => [month_4_rainfall]
+
+        /magnitudepred
+        MakeMagnitudePrediction() => [magnitude]
+
+        /regression
+        CompareRegression() => json object
 '''
 
 import os
 import numpy as np
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, jsonify
 from flask_cors import CORS
 import landslide_predictor
 import rainfall_predictor
@@ -35,6 +43,7 @@ def MakeRainfallPrediction():
         A = [[first_month, second_month, third_month]]
         A = np.array(A)
         prd = rainfall_predictor.predictor(A)
+
         return(str(prd))
 
 @app.route('/fatalitypred', methods=['GET', 'POST'])        
@@ -52,6 +61,7 @@ def MakeFatalityPrediction():
         latitude = posted_data['latitude']
         A = [location_accuracy,landslide_category,landslide_trigger, landslide_size, landslide_setting, country_name,admin_division_population,longitude,latitude]
         prd = landslide_predictor.predictor(A)
+
         return(str(prd))
 
 @app.route('/magnitudepred', methods=['GET', 'POST'])
@@ -70,7 +80,21 @@ def MakeMagnitudePrediction():
         shortPlace = posted_data['shortPlace']
         A = [latitude, longitude, depth, rms, types, depthError, status, locationSource, magSource,shortPlace]
         prd = earthquake_predictor.predictor(A)
+
         return(str(prd))
+
+@app.route('/regression', methods=['GET', 'POST'])
+def CompareRegression():
+    if request.method == 'GET':
+        reg_arr_lp = landslide_predictor.get_mae()
+        reg_arr_rp = rainfall_predictor.get_mae()
+        reg_arr_ep = earthquake_predictor.get_mae()
+
+        return jsonify(
+            reg_arr_lp=reg_arr_lp,
+            reg_arr_rp=reg_arr_rp,
+            reg_arr_ep=reg_arr_ep
+        )
 
 if __name__=='__main__':
     app.run(debug=False)

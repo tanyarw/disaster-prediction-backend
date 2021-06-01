@@ -8,7 +8,11 @@ from sklearn import preprocessing
 from sklearn import utils
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
+from xgboost import XGBRegressor
+from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 
@@ -44,3 +48,22 @@ rf.fit(X_train, y_train)
 def predictor(my_array):
     y_pred = rf.predict(my_array) #array of 1 value
     return y_pred[0]
+
+def get_mae():
+    reg = LinearRegression()
+    reg.fit(X_train, y_train)
+    y_pred_reg = reg.predict(X_test)
+
+    dec = DecisionTreeRegressor()
+    dec.fit(X_train, y_train)
+    y_pred_dec = dec.predict(X_test)
+
+    clf = RandomForestRegressor(n_estimators=200, max_depth = 10, criterion='mse')
+    clf.fit(X_train, y_train)
+    y_pred_clf = clf.predict(X_test)
+
+    xgb = XGBRegressor()
+    xgb.fit(X_train, y_train)
+    y_pred_xgb = xgb.predict(X_test)
+
+    return [mean_absolute_error(y_test, y_pred_reg), mean_absolute_error(y_test, y_pred_dec), mean_absolute_error(y_test, y_pred_clf), mean_absolute_error(y_test, y_pred_xgb)]

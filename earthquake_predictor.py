@@ -8,7 +8,10 @@ from sklearn import preprocessing
 from sklearn import utils
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
+from xgboost import XGBRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 
@@ -49,7 +52,7 @@ for i in categorical:
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.10)
 
 # Random forest regressor
-clf = RandomForestRegressor(n_estimators=100, criterion='mse', max_depth=None, min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features='auto', max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None, bootstrap=True, oob_score=False, n_jobs=None, random_state=None, verbose=0, warm_start=False, ccp_alpha=0.0, max_samples=None)
+clf = RandomForestRegressor(n_estimators=100, criterion='mse', max_depth=None)
 clf.fit(X_train, y_train)
 
 def predictor(my_array):
@@ -67,3 +70,22 @@ def predictor(my_array):
 
     y_pred = clf.predict([enc_array])
     return y_pred[0]
+
+def get_mae():
+    reg = LinearRegression()
+    reg.fit(X_train, y_train)
+    y_pred_reg = reg.predict(X_test)
+
+    dec = DecisionTreeRegressor()
+    dec.fit(X_train, y_train)
+    y_pred_dec = dec.predict(X_test)
+
+    clf = RandomForestRegressor(n_estimators=100, criterion='mse', max_depth=None)
+    clf.fit(X_train, y_train)
+    y_pred_clf = clf.predict(X_test)
+
+    xgb = XGBRegressor()
+    xgb.fit(X_train, y_train)
+    y_pred_xgb = xgb.predict(X_test)
+
+    return [mean_absolute_error(y_test, y_pred_reg), mean_absolute_error(y_test, y_pred_dec), mean_absolute_error(y_test, y_pred_clf), mean_absolute_error(y_test, y_pred_xgb)]
