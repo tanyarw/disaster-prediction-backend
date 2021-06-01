@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
+from sklearn.preprocessing import StandardScaler
 
 # Read dataset
 earthquake_df = pd.read_csv('Datasets/earthquake-all-month.csv')
@@ -20,11 +21,14 @@ earthquake_df.dropna(subset=['mag'],inplace=True)
 # Feature vector
 features=[i for i in earthquake_df.columns if earthquake_df[i].isna().sum()==0] # features include place, type and source
 
-for i in ['mag','place','time','id','updated','net','magType','depth','depthError']:
+for i in ['mag','place','time','id','updated','net','magType']:
     features.remove(i)
     
 X=earthquake_df[features]
-y=earthquake_df[['mag','depth', 'depthError']] # predict magnitude, depth, depthError
+y=earthquake_df['mag'] # predict magnitude
+
+#Normalize the depth feature
+X[['depth']] = StandardScaler().fit_transform(X[['depth']])
 
 # Segregate categorical data
 categorical = []
@@ -49,13 +53,16 @@ clf = RandomForestRegressor(n_estimators=100, criterion='mse', max_depth=None, m
 clf.fit(X_train, y_train)
 
 def predictor(my_array):
-    enc_array = my_array[0:3]
-    labels = ['type', 'status', 'locationSource', 'magSource', 'short place']
+    enc_array = my_array[0:4]
+    labels = ['type', 'depthError', 'status', 'locationSource', 'magSource', 'short place']
     i = 3
     for label in labels:
+        if label == 'depthError':
+            enc_array.append(my_array[5])
+            continue
         t = label_maps[label][my_array[i]]
         i += 1
         enc_array.append(t)
 
-    y_pred = clf.predict([enc_array])
-    return y_pred #['mag','depth', 'depthError'] 3 values
+    y_pred = clf.predict(enc_array)
+    return y_pred 

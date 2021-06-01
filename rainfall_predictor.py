@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
+from sklearn.preprocessing import StandardScaler
 
 
 
@@ -18,6 +19,9 @@ rainfall_df = pd.read_csv('Datasets/rainfall_india_1901-2017.csv')
 
 # Deal with NaN values
 rainfall_df.fillna(value = 0, inplace = True)
+
+#Normalize the continuous values:
+rainfall_df[['JAN',	'FEB',	'MAR', 'APR',	'MAY',	'JUN',	'JUL',	'AUG',	'SEP',	'OCT',	'NOV',	'DEC',	'ANNUAL',	'JF',	'MAM',	'JJAS',	'OND']] = StandardScaler().fit_transform(rainfall_df[['JAN',	'FEB',	'MAR', 'APR',	'MAY',	'JUN',	'JUL',	'AUG',	'SEP',	'OCT',	'NOV',	'DEC',	'ANNUAL',	'JF',	'MAM',	'JJAS',	'OND']])
 
 # Split train and test sets
 div_data = np.asarray(rainfall_df[['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']])

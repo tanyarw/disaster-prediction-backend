@@ -60,13 +60,15 @@ def MakeMagnitudePrediction():
         posted_data = request.get_json()
         latitude = posted_data['latitude']
         longitude = posted_data['longitude']
+        depth = posted_data['depth']
         rms = posted_data['rms']
         types = posted_data['type']
+        depthError = posted_data['depthError']
         status = posted_data['status']
         locationSource = posted_data['locationSource']
         magSource = posted_data['magSource']
         shortPlace = posted_data['shortPlace']
-        A = [latitude, longitude, rms, types, status, locationSource, magSource,shortPlace]
+        A = [latitude, longitude, depth, rms, types, depthError, status, locationSource, magSource,shortPlace]
         prd = earthquake_predictor.predictor(A)
         return(str(prd))
 
