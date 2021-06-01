@@ -65,4 +65,4 @@ def predictor(my_array):
         enc_array.append(t)
 
     y_pred = clf.predict(enc_array)
-    return y_pred 
+    return y_pred[0]
